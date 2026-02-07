@@ -27,7 +27,9 @@ class Home {
 
     initQuickActions() {
         // 使用事件委托处理所有快速操作按钮
-        // 使用 capture 阶段确保优先执行
+        // 使用 once: true 确保只处理一次
+        let isProcessing = false;
+
         document.addEventListener('click', (e) => {
             const quickBtn = e.target.closest('.quick-btn');
             if (!quickBtn) return;
@@ -35,11 +37,13 @@ class Home {
             const module = quickBtn.getAttribute('data-module');
             if (!module) return;
 
-            // 阻止所有其他监听器
+            // 防止重复处理
+            if (isProcessing) return;
+            isProcessing = true;
+
+            // 阻止所有其他监听器和默认行为
             e.stopImmediatePropagation();
             e.preventDefault();
-
-            console.log('快速操作按钮点击:', module);
 
             // 切换到对应模块
             if (navbar) {
@@ -47,8 +51,12 @@ class Home {
                 navbar.setActiveLink(`#${module}`);
             }
 
-            // 打开对应的添加模态框
+            // 打开对应的添加模态框（确保只调用一次）
             setTimeout(() => {
+                // 先关闭所有已打开的模态框
+                if (modal) modal.closeAll();
+
+                // 然后打开对应的模态框
                 switch (module) {
                     case 'goals':
                         if (goals) goals.openAddModal();
@@ -60,7 +68,12 @@ class Home {
                         if (habits) habits.openAddModal();
                         break;
                 }
-            }, 50);
+
+                // 重置处理标志
+                setTimeout(() => {
+                    isProcessing = false;
+                }, 100);
+            }, 100);
         }, true); // 使用捕获阶段
     }
 

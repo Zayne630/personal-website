@@ -53,8 +53,15 @@ p {
     outline-offset: 2px;
 }
 
-/* 快速操作按钮不显示焦点轮廓 */
-.quick-btn:focus-visible {
+/* 快速操作按钮完全移除焦点样式 */
+.quick-btn:focus,
+.quick-btn:focus-visible,
+.quick-btn:focus:hover {
     outline: none !important;
-    box-shadow: 0 0 0 3px var(--primary-light) !important;
+    outline-offset: 0 !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.quick-btn:hover {
+    box-shadow: var(--shadow-md) !important;
 }

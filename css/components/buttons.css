@@ -13,6 +13,12 @@
     white-space: nowrap;
 }
 
+/* 移除所有按钮的焦点轮廓 */
+.btn:focus,
+.btn:focus-visible {
+    outline: none;
+}
+
 .btn-primary {
     background: var(--primary-color);
     color: white;
@@ -83,6 +89,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: var(--spacing-sm);
     padding: var(--spacing-lg);
     background: var(--bg-card);
@@ -93,6 +100,28 @@
     border: none;
     outline: none;
     position: relative;
+    text-align: center;
+}
+
+/* 移除所有焦点状态 */
+.quick-btn:focus,
+.quick-btn:hover,
+.quick-btn:active {
+    outline: none;
+    border: none;
+}
+
+.quick-btn:focus-visible {
+    outline: none !important;
+    border: none !important;
+    box-shadow: 0 0 0 3px var(--primary-light) !important;
+}
+
+/* 移除所有可能的伪元素 */
+.quick-btn::before,
+.quick-btn::after {
+    display: none !important;
+    content: none !important;
 }
 
 .quick-btn:hover {
@@ -100,33 +129,27 @@
     box-shadow: var(--shadow-md);
 }
 
-.quick-btn:focus {
-    outline: none;
-}
-
-.quick-btn:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--primary-light);
-}
-
 .quick-btn:active {
     transform: translateY(-2px);
 }
 
-/* 移除所有可能的伪元素 */
-.quick-btn::before,
-.quick-btn::after {
-    display: none;
-}
-
+/* 图标容器确保居中 */
 .quick-btn .btn-icon {
     font-size: var(--font-size-2xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    line-height: 1;
 }
 
 .quick-btn .btn-text {
     font-size: var(--font-size-sm);
     font-weight: 500;
     color: var(--text-primary);
+    text-align: center;
+    width: 100%;
 }
 
 /* 响应式 */
