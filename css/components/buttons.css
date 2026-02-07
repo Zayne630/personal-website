@@ -62,9 +62,20 @@
     transition: all var(--transition-fast);
 }
 
-.btn-icon:hover {
-    background: var(--bg-secondary);
+/* 移除 .btn-icon 的所有焦点和悬停背景 */
+.btn-icon:hover,
+.btn-icon:focus,
+.btn-icon:focus-visible {
+    background: transparent !important;
     color: var(--text-primary);
+}
+
+/* 快速操作按钮内的图标不需要背景 */
+.quick-btn .btn-icon:hover,
+.quick-btn .btn-icon:focus,
+.quick-btn .btn-icon:focus-visible {
+    background: transparent !important;
+    color: inherit;
 }
 
 .btn-sm {

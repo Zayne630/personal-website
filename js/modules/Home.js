@@ -1,6 +1,7 @@
 // 首页模块
 class Home {
     constructor() {
+        this.isInited = false;
         this.isQuickActionsInited = false;
         this.isViewAllLinksInited = false;
         this.init();
@@ -10,6 +11,8 @@ class Home {
         // 防止重复初始化
         if (this.isInited) return;
         this.isInited = true;
+
+        console.log('Home init 开始');
 
         // 监听页面切换
         window.addEventListener('sectionChange', (e) => {
@@ -36,18 +39,27 @@ class Home {
         if (this.isQuickActionsInited) return;
         this.isQuickActionsInited = true;
 
-        // 获取所有快速操作按钮并直接绑定事件
+        console.log('initQuickActions 开始');
+
+        // 获取所有快速操作按钮
         const quickBtns = document.querySelectorAll('.quick-btn');
-        quickBtns.forEach(btn => {
-            // 使用单一事件监听器，防止重复
+        console.log('找到快速操作按钮数量:', quickBtns.length);
+
+        quickBtns.forEach((btn, index) => {
+            const module = btn.getAttribute('data-module');
+            console.log(`按钮 ${index}: module=${module}`);
+
+            // 移除所有可能的旧事件监听器
+            btn.onclick = null;
+
+            // 添加新的事件监听器 - 使用直接方法而不是 click()
             btn.onclick = (e) => {
+                // 彻底阻止事件传播
                 e.preventDefault();
                 e.stopPropagation();
+                e.stopImmediatePropagation();
 
-                const module = btn.getAttribute('data-module');
-                if (!module) return;
-
-                console.log('快速操作按钮点击:', module);
+                console.log('快速操作按钮被点击:', module, '按钮 index:', index);
 
                 // 切换到对应模块
                 if (navbar) {
@@ -55,27 +67,35 @@ class Home {
                     navbar.setActiveLink(`#${module}`);
                 }
 
-                // 等待页面切换完成后，通过点击对应模块的添加按钮来打开模态框
-                // 这样确保只有对应模块的模态框被打开
+                // 等待页面切换完成后，直接调用对应模块的 openAddModal 方法
                 setTimeout(() => {
-                    let targetBtn = null;
+                    console.log('准备打开模态框:', module);
+
+                    // 先关闭所有已打开的模态框
+                    if (modal) modal.closeAll();
+
+                    // 直接调用对应模块的方法，不使用 click()
                     switch (module) {
                         case 'goals':
-                            targetBtn = document.getElementById('addGoalBtn');
+                            if (goals && typeof goals.openAddModal === 'function') {
+                                console.log('调用 goals.openAddModal()');
+                                goals.openAddModal();
+                            }
                             break;
                         case 'notes':
-                            targetBtn = document.getElementById('addNoteBtn');
+                            if (notes && typeof notes.openAddModal === 'function') {
+                                console.log('调用 notes.openAddModal()');
+                                notes.openAddModal();
+                            }
                             break;
                         case 'habits':
-                            targetBtn = document.getElementById('addHabitBtn');
+                            if (habits && typeof habits.openAddModal === 'function') {
+                                console.log('调用 habits.openAddModal()');
+                                habits.openAddModal();
+                            }
                             break;
                     }
-
-                    if (targetBtn) {
-                        console.log('触发添加按钮点击:', module, targetBtn.id);
-                        targetBtn.click();
-                    }
-                }, 100);
+                }, 150);
             };
         });
     }
