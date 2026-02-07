@@ -119,6 +119,27 @@
                             <p class="empty-state">还没有习惯，创建一个新习惯吧！</p>
                         </div>
                     </div>
+
+                    <!-- 数据管理 -->
+                    <div class="overview-card" id="dataManagement">
+                        <div class="card-header">
+                            <h2>💾 数据管理</h2>
+                        </div>
+                        <div class="card-content">
+                            <p class="data-hint" style="color: var(--text-secondary); margin-bottom: var(--spacing-md); font-size: var(--font-size-sm);">
+                                导出数据可以备份你的目标、笔记和习惯记录
+                            </p>
+                            <div class="data-actions" style="display: flex; gap: var(--spacing-md);">
+                                <button class="btn btn-secondary" id="exportDataBtn">
+                                    <span>📤</span> 导出数据
+                                </button>
+                                <button class="btn btn-secondary" id="importDataBtn">
+                                    <span>📥</span> 导入数据
+                                </button>
+                                <input type="file" id="importFileInput" accept=".json" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -313,6 +334,7 @@
     <script src="js/modules/Notes.js"></script>
     <script src="js/modules/Habits.js"></script>
     <script src="js/modules/Home.js"></script>
+    <script src="js/modules/DataManager.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

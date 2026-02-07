@@ -215,7 +215,30 @@ class Goals {
             return;
         }
 
-        overview.innerHTML = activeGoals.map(goal => `
+        // 添加进度条
+        const totalGoals = this.goals.length;
+        const completedGoals = this.goals.filter(g => g.status === 'completed').length;
+        const progressPercent = totalGoals > 0 ? Math.round((completedGoals / totalGoals) * 100) : 0;
+
+        let progressHtml = '';
+        if (totalGoals > 0) {
+            progressHtml = `
+                <div class="progress-section" style="margin-bottom: var(--spacing-md); padding: var(--spacing-md); background: var(--bg-secondary); border-radius: var(--radius-md);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: var(--spacing-sm); font-size: var(--font-size-sm);">
+                        <span>完成进度</span>
+                        <span style="font-weight: 600; color: var(--primary-color);">${progressPercent}%</span>
+                    </div>
+                    <div class="progress-bar" style="width: 100%; height: 8px; background: var(--bg-card); border-radius: var(--radius-full); overflow: hidden;">
+                        <div class="progress-fill" style="width: ${progressPercent}%; height: 100%; background: linear-gradient(90deg, var(--primary-light), var(--primary-color)); transition: width var(--transition-normal);"></div>
+                    </div>
+                    <div style="font-size: var(--font-size-xs); color: var(--text-secondary); margin-top: var(--spacing-xs);">
+                        ${completedGoals} / ${totalGoals} 个目标已完成
+                    </div>
+                </div>
+            `;
+        }
+
+        overview.innerHTML = progressHtml + activeGoals.map(goal => `
             <div class="goal-card priority-${goal.priority}" style="margin-bottom: 8px;">
                 <div class="goal-header">
                     <h4 class="goal-title" style="font-size: 14px;">${Helpers.escapeHtml(goal.title)}</h4>

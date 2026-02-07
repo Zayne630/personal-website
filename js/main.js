@@ -46,6 +46,7 @@ window.App = {
     notes,
     habits,
     home,
+    dataManager,
     CONSTANTS,
     Helpers
 };

@@ -193,11 +193,18 @@ class Notes {
             `<span class="note-tag">${Helpers.escapeHtml(tag)}</span>`
         ).join('') || '';
 
+        const content = note.content;
+        const isLong = content.length > 150;
+        const truncatedContent = isLong ? Helpers.truncateText(content, 150) : content;
+
         return `
             <div class="note-card" data-id="${note.id}">
                 <h3 class="note-title">${Helpers.escapeHtml(note.title)}</h3>
                 ${tagsHtml ? `<div class="note-tags">${tagsHtml}</div>` : ''}
-                <p class="note-content">${Helpers.escapeHtml(note.content)}</p>
+                <div class="note-content-wrapper">
+                    <p class="note-content ${isLong ? 'collapsed' : ''}">${Helpers.escapeHtml(content)}</p>
+                    ${isLong ? `<button class="btn-expand" style="color: var(--primary-color); font-size: var(--font-size-sm); margin-top: var(--spacing-xs); cursor: pointer;">展开全部</button>` : ''}
+                </div>
                 <div class="note-footer">
                     <span class="note-date">${Helpers.getRelativeTime(note.createdAt)}</span>
                     <div class="goal-actions">
@@ -216,6 +223,30 @@ class Notes {
 
         this.elements.list.querySelectorAll('.delete-note').forEach(btn => {
             btn.addEventListener('click', () => this.deleteNote(btn.getAttribute('data-id')));
+        });
+
+        // 展开/收起按钮
+        this.elements.list.querySelectorAll('.btn-expand').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const content = e.target.previousElementSibling;
+                const isExpanded = content.classList.contains('expanded');
+
+                if (isExpanded) {
+                    content.classList.remove('expanded');
+                    content.classList.add('collapsed');
+                    content.style.maxHeight = '120px';
+                    content.style.display = '-webkit-box';
+                    content.style.webkitLineClamp = '4';
+                    e.target.textContent = '展开全部';
+                } else {
+                    content.classList.remove('collapsed');
+                    content.classList.add('expanded');
+                    content.style.maxHeight = 'none';
+                    content.style.display = 'block';
+                    content.style.webkitLineClamp = 'unset';
+                    e.target.textContent = '收起';
+                }
+            });
         });
     }
 
