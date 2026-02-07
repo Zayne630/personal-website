@@ -35,13 +35,16 @@ class Notes {
         // 表单提交
         this.elements.form?.addEventListener('submit', (e) => this.handleSubmit(e));
 
-        // 快速操作按钮
-        document.querySelectorAll('.quick-btn[data-module="notes"]').forEach(btn => {
-            btn.addEventListener('click', () => {
+        // 使用事件委托处理快速操作按钮
+        document.addEventListener('click', (e) => {
+            const quickBtn = e.target.closest('.quick-btn[data-module="notes"]');
+            if (quickBtn) {
+                e.preventDefault();
+                e.stopPropagation();
                 navbar?.showSection('notes');
                 navbar?.setActiveLink('#notes');
                 this.openAddModal();
-            });
+            }
         });
 
         // 监听页面切换
@@ -262,11 +265,24 @@ class Notes {
         }
 
         overview.innerHTML = recentNotes.map(note => `
-            <div class="note-card" style="margin-bottom: 8px; padding: 12px;">
+            <div class="note-card overview-item" data-id="${note.id}" style="margin-bottom: 8px; padding: 12px; cursor: pointer;">
                 <h4 class="note-title" style="font-size: 14px;">${Helpers.escapeHtml(note.title)}</h4>
                 <span class="note-date">${Helpers.getRelativeTime(note.createdAt)}</span>
             </div>
         `).join('');
+
+        // 为概览条目添加点击事件
+        overview.querySelectorAll('.overview-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const noteId = item.getAttribute('data-id');
+                navbar?.showSection('notes');
+                navbar?.setActiveLink('#notes');
+                // 等待页面切换完成后打开编辑模态框
+                setTimeout(() => {
+                    this.openEditModal(noteId);
+                }, 100);
+            });
+        });
 
         // 更新统计
         const statNotes = document.getElementById('statNotes');

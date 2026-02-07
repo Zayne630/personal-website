@@ -32,13 +32,16 @@ class Goals {
         // 表单提交
         this.elements.form?.addEventListener('submit', (e) => this.handleSubmit(e));
 
-        // 快速操作按钮
-        document.querySelectorAll('.quick-btn[data-module="goals"]').forEach(btn => {
-            btn.addEventListener('click', () => {
+        // 使用事件委托处理快速操作按钮
+        document.addEventListener('click', (e) => {
+            const quickBtn = e.target.closest('.quick-btn[data-module="goals"]');
+            if (quickBtn) {
+                e.preventDefault();
+                e.stopPropagation();
                 navbar?.showSection('goals');
                 navbar?.setActiveLink('#goals');
                 this.openAddModal();
-            });
+            }
         });
 
         // 监听页面切换
@@ -239,13 +242,26 @@ class Goals {
         }
 
         overview.innerHTML = progressHtml + activeGoals.map(goal => `
-            <div class="goal-card priority-${goal.priority}" style="margin-bottom: 8px;">
+            <div class="goal-card priority-${goal.priority} overview-item" data-id="${goal.id}" style="margin-bottom: 8px; cursor: pointer;">
                 <div class="goal-header">
                     <h4 class="goal-title" style="font-size: 14px;">${Helpers.escapeHtml(goal.title)}</h4>
                     <span class="goal-badge goal-status ${goal.status}">${CONSTANTS.STATUS_LABELS[goal.status]}</span>
                 </div>
             </div>
         `).join('');
+
+        // 为概览条目添加点击事件
+        overview.querySelectorAll('.overview-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const goalId = item.getAttribute('data-id');
+                navbar?.showSection('goals');
+                navbar?.setActiveLink('#goals');
+                // 等待页面切换完成后打开编辑模态框
+                setTimeout(() => {
+                    this.openEditModal(goalId);
+                }, 100);
+            });
+        });
 
         // 更新统计
         const statGoals = document.getElementById('statGoals');

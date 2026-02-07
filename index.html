@@ -45,9 +45,10 @@
                 <!-- 左侧个人信息 -->
                 <aside class="profile-section">
                     <div class="profile-card">
-                        <div class="avatar-container">
-                            <img src="assets/images/avatar.svg" alt="头像" class="avatar">
+                        <div class="avatar-container" id="avatarContainer" style="cursor: pointer;" title="点击更换头像">
+                            <img src="assets/images/avatar.svg" alt="头像" class="avatar" id="avatarImage">
                         </div>
+                        <input type="file" id="avatarInput" accept="image/*" style="display: none;">
                         <h1 class="profile-name">我的成长之旅</h1>
                         <p class="profile-bio">记录每一个进步，见证更好的自己</p>
 

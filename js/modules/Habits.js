@@ -26,13 +26,16 @@ class Habits {
         // 表单提交
         this.elements.form?.addEventListener('submit', (e) => this.handleSubmit(e));
 
-        // 快速操作按钮
-        document.querySelectorAll('.quick-btn[data-module="habits"]').forEach(btn => {
-            btn.addEventListener('click', () => {
+        // 使用事件委托处理快速操作按钮
+        document.addEventListener('click', (e) => {
+            const quickBtn = e.target.closest('.quick-btn[data-module="habits"]');
+            if (quickBtn) {
+                e.preventDefault();
+                e.stopPropagation();
                 navbar?.showSection('habits');
                 navbar?.setActiveLink('#habits');
                 this.openAddModal();
-            });
+            }
         });
 
         // 监听页面切换
@@ -246,7 +249,7 @@ class Habits {
         overview.innerHTML = todayHabits.map(habit => {
             const isChecked = this.isCheckedToday(habit);
             return `
-                <div class="habit-card" style="margin-bottom: 8px; padding: 12px; border-left: 4px solid ${habit.color};">
+                <div class="habit-card overview-item" data-id="${habit.id}" style="margin-bottom: 8px; padding: 12px; border-left: 4px solid ${habit.color}; cursor: pointer;">
                     <div class="habit-icon" style="width: 36px; height: 36px; font-size: 18px; background: ${habit.color}20;">
                         ${habit.icon || '✅'}
                     </div>
@@ -261,14 +264,22 @@ class Habits {
             `;
         }).join('');
 
-        // 绑定打卡事件
-        overview.querySelectorAll('.habit-check').forEach(el => {
-            el.style.cursor = 'pointer';
-            el.addEventListener('click', () => {
-                const id = el.closest('.habit-card')?.querySelector('.edit-habit, .delete-habit')?.getAttribute('data-id');
-                if (id) {
-                    this.toggleCheck(id);
+        // 为概览条目添加点击事件（点击整个卡片跳转，但不包括打卡按钮）
+        overview.querySelectorAll('.overview-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                // 如果点击的是打卡按钮，不跳转
+                if (e.target.classList.contains('habit-check') || e.target.closest('.habit-check')) {
+                    const habitId = item.getAttribute('data-id');
+                    this.toggleCheck(habitId);
+                    return;
                 }
+                // 否则跳转到习惯页面并打开编辑模态框
+                const habitId = item.getAttribute('data-id');
+                navbar?.showSection('habits');
+                navbar?.setActiveLink('#habits');
+                setTimeout(() => {
+                    this.openEditModal(habitId);
+                }, 100);
             });
         });
 
