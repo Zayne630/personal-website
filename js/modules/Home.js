@@ -1,10 +1,16 @@
 // 首页模块
 class Home {
     constructor() {
+        this.isQuickActionsInited = false;
+        this.isViewAllLinksInited = false;
         this.init();
     }
 
     init() {
+        // 防止重复初始化
+        if (this.isInited) return;
+        this.isInited = true;
+
         // 监听页面切换
         window.addEventListener('sectionChange', (e) => {
             if (e.detail.sectionId === 'home') {
@@ -26,55 +32,52 @@ class Home {
     }
 
     initQuickActions() {
-        // 使用事件委托处理所有快速操作按钮
-        // 使用 once: true 确保只处理一次
-        let isProcessing = false;
+        // 防止重复初始化
+        if (this.isQuickActionsInited) return;
+        this.isQuickActionsInited = true;
 
-        document.addEventListener('click', (e) => {
-            const quickBtn = e.target.closest('.quick-btn');
-            if (!quickBtn) return;
+        // 获取所有快速操作按钮并直接绑定事件
+        const quickBtns = document.querySelectorAll('.quick-btn');
+        quickBtns.forEach(btn => {
+            // 使用单一事件监听器，防止重复
+            btn.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
 
-            const module = quickBtn.getAttribute('data-module');
-            if (!module) return;
+                const module = btn.getAttribute('data-module');
+                if (!module) return;
 
-            // 防止重复处理
-            if (isProcessing) return;
-            isProcessing = true;
+                console.log('快速操作按钮点击:', module);
 
-            // 阻止所有其他监听器和默认行为
-            e.stopImmediatePropagation();
-            e.preventDefault();
-
-            // 切换到对应模块
-            if (navbar) {
-                navbar.showSection(module);
-                navbar.setActiveLink(`#${module}`);
-            }
-
-            // 打开对应的添加模态框（确保只调用一次）
-            setTimeout(() => {
-                // 先关闭所有已打开的模态框
-                if (modal) modal.closeAll();
-
-                // 然后打开对应的模态框
-                switch (module) {
-                    case 'goals':
-                        if (goals) goals.openAddModal();
-                        break;
-                    case 'notes':
-                        if (notes) notes.openAddModal();
-                        break;
-                    case 'habits':
-                        if (habits) habits.openAddModal();
-                        break;
+                // 切换到对应模块
+                if (navbar) {
+                    navbar.showSection(module);
+                    navbar.setActiveLink(`#${module}`);
                 }
 
-                // 重置处理标志
+                // 等待页面切换完成后，通过点击对应模块的添加按钮来打开模态框
+                // 这样确保只有对应模块的模态框被打开
                 setTimeout(() => {
-                    isProcessing = false;
+                    let targetBtn = null;
+                    switch (module) {
+                        case 'goals':
+                            targetBtn = document.getElementById('addGoalBtn');
+                            break;
+                        case 'notes':
+                            targetBtn = document.getElementById('addNoteBtn');
+                            break;
+                        case 'habits':
+                            targetBtn = document.getElementById('addHabitBtn');
+                            break;
+                    }
+
+                    if (targetBtn) {
+                        console.log('触发添加按钮点击:', module, targetBtn.id);
+                        targetBtn.click();
+                    }
                 }, 100);
-            }, 100);
-        }, true); // 使用捕获阶段
+            };
+        });
     }
 
     initViewAllLinks() {

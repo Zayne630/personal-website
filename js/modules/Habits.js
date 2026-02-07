@@ -3,6 +3,7 @@ class Habits {
     constructor() {
         this.habits = [];
         this.editingId = null;
+        this.isInited = false;
 
         this.elements = {
             list: document.getElementById('habitsList'),
@@ -17,6 +18,10 @@ class Habits {
     }
 
     init() {
+        // 防止重复初始化
+        if (this.isInited) return;
+        this.isInited = true;
+
         // 加载数据
         this.loadHabits();
 

@@ -8,11 +8,16 @@ class Navbar {
 
         this.lastScrollY = window.scrollY;
         this.isMenuOpen = false;
+        this.isInited = false;
 
         this.init();
     }
 
     init() {
+        // 防止重复初始化
+        if (this.isInited) return;
+        this.isInited = true;
+
         // 滚动检测
         window.addEventListener('scroll', () => this.handleScroll());
 

@@ -4,6 +4,7 @@ class Goals {
         this.goals = [];
         this.currentFilter = 'all';
         this.editingId = null;
+        this.isInited = false;
 
         this.elements = {
             list: document.getElementById('goalsList'),
@@ -18,6 +19,10 @@ class Goals {
     }
 
     init() {
+        // 防止重复初始化
+        if (this.isInited) return;
+        this.isInited = true;
+
         // 加载数据
         this.loadGoals();
 

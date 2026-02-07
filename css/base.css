@@ -53,15 +53,30 @@ p {
     outline-offset: 2px;
 }
 
-/* 快速操作按钮完全移除焦点样式 */
+/* 快速操作按钮完全移除焦点样式，使用美观的悬停效果 */
+.quick-btn {
+    outline: none !important;
+}
+
 .quick-btn:focus,
 .quick-btn:focus-visible,
 .quick-btn:focus:hover {
     outline: none !important;
     outline-offset: 0 !important;
-    box-shadow: var(--shadow-sm) !important;
 }
 
+/* 美观的悬停光晕效果 */
 .quick-btn:hover {
-    box-shadow: var(--shadow-md) !important;
+    box-shadow:
+        0 8px 24px rgba(255, 140, 66, 0.25),
+        0 4px 12px rgba(255, 140, 66, 0.15),
+        0 0 0 1px rgba(255, 140, 66, 0.1) !important;
+    transform: translateY(-6px) scale(1.02);
+}
+
+.quick-btn:active {
+    box-shadow:
+        0 4px 12px rgba(255, 140, 66, 0.2),
+        0 2px 6px rgba(255, 140, 66, 0.12) !important;
+    transform: translateY(-2px) scale(1);
 }

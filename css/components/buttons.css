@@ -95,26 +95,23 @@
     background: var(--bg-card);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
-    transition: all var(--transition-normal);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
     border: none;
     outline: none;
     position: relative;
     text-align: center;
+    overflow: hidden;
 }
 
-/* 移除所有焦点状态 */
+/* 完全移除所有焦点相关样式 */
 .quick-btn:focus,
-.quick-btn:hover,
-.quick-btn:active {
-    outline: none;
-    border: none;
-}
-
-.quick-btn:focus-visible {
+.quick-btn:focus-visible,
+.quick-btn:-moz-focusring,
+.quick-btn::-moz-focus-inner {
     outline: none !important;
     border: none !important;
-    box-shadow: 0 0 0 3px var(--primary-light) !important;
+    box-shadow: none !important;
 }
 
 /* 移除所有可能的伪元素 */
@@ -124,13 +121,13 @@
     content: none !important;
 }
 
+/* 悬停状态 - 由 base.css 提供美观的光晕效果 */
 .quick-btn:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
+    /* 具体效果在 base.css 中定义 */
 }
 
 .quick-btn:active {
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1);
 }
 
 /* 图标容器确保居中 */
@@ -139,8 +136,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: auto;
+    width: 48px;
+    height: 48px;
     line-height: 1;
 }
 

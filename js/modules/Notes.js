@@ -5,6 +5,7 @@ class Notes {
         this.searchQuery = '';
         this.selectedTag = null;
         this.editingId = null;
+        this.isInited = false;
 
         this.elements = {
             list: document.getElementById('notesList'),
@@ -20,6 +21,10 @@ class Notes {
     }
 
     init() {
+        // 防止重复初始化
+        if (this.isInited) return;
+        this.isInited = true;
+
         // 加载数据
         this.loadNotes();
 
