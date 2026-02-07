@@ -1,0 +1,131 @@
+/* 首页样式 */
+.home-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: var(--spacing-lg);
+    align-items: start;
+}
+
+.profile-section {
+    position: sticky;
+    top: calc(var(--navbar-height) + var(--spacing-lg));
+}
+
+.content-section {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 列表样式 */
+.goals-list,
+.notes-list,
+.habits-list {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 习惯热力图 */
+.habits-stats {
+    margin-top: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.habits-stats h3 {
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-lg);
+}
+
+.heatmap {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: var(--spacing-xs);
+}
+
+.heatmap-day {
+    aspect-ratio: 1;
+    border-radius: var(--radius-sm);
+    background: var(--bg-secondary);
+    position: relative;
+    cursor: pointer;
+    transition: transform var(--transition-fast);
+}
+
+.heatmap-day:hover {
+    transform: scale(1.2);
+}
+
+.heatmap-day.level-1 {
+    background: var(--primary-light);
+}
+
+.heatmap-day.level-2 {
+    background: var(--primary-color);
+}
+
+.heatmap-day.level-3 {
+    background: var(--primary-dark);
+}
+
+.heatmap-day.today {
+    border: 2px solid var(--primary-color);
+}
+
+.heatmap-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--text-primary);
+    color: white;
+    font-size: var(--font-size-xs);
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-fast);
+    pointer-events: none;
+}
+
+.heatmap-day:hover .heatmap-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 响应式 */
+@media (max-width: 1024px) {
+    .home-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-section {
+        position: static;
+    }
+
+    .profile-card {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .home-layout {
+        gap: var(--spacing-md);
+    }
+
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .heatmap {
+        grid-template-columns: repeat(7, 1fr);
+        gap: 2px;
+    }
+
+    .heatmap-day {
+        min-width: 12px;
+        min-height: 12px;
+    }
+}

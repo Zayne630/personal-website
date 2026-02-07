@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的成长空间</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components/navbar.css">
+    <link rel="stylesheet" href="css/components/cards.css">
+    <link rel="stylesheet" href="css/components/buttons.css">
+    <link rel="stylesheet" href="css/components/forms.css">
+    <link rel="stylesheet" href="css/components/modals.css">
+    <link rel="stylesheet" href="css/pages/home.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <span class="logo-icon">🌱</span>
+                <span class="logo-text">成长空间</span>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="#home" class="nav-link active">首页</a></li>
+                <li><a href="#goals" class="nav-link">目标</a></li>
+                <li><a href="#notes" class="nav-link">笔记</a></li>
+                <li><a href="#habits" class="nav-link">习惯</a></li>
+            </ul>
+            <button class="navbar-toggle" id="navbarToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="main-container">
+        <!-- 首页区域 -->
+        <section id="home" class="page-section active">
+            <div class="home-layout">
+                <!-- 左侧个人信息 -->
+                <aside class="profile-section">
+                    <div class="profile-card">
+                        <div class="avatar-container">
+                            <img src="assets/images/avatar.svg" alt="头像" class="avatar">
+                        </div>
+                        <h1 class="profile-name">我的成长之旅</h1>
+                        <p class="profile-bio">记录每一个进步，见证更好的自己</p>
+
+                        <!-- 统计数据 -->
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-value" id="statGoals">0</span>
+                                <span class="stat-label">目标</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="statNotes">0</span>
+                                <span class="stat-label">笔记</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="statHabits">0</span>
+                                <span class="stat-label">习惯</span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- 右侧内容区 -->
+                <div class="content-section">
+                    <!-- 快速操作 -->
+                    <div class="quick-actions">
+                        <button class="quick-btn" data-module="goals">
+                            <span class="btn-icon">🎯</span>
+                            <span class="btn-text">添加目标</span>
+                        </button>
+                        <button class="quick-btn" data-module="notes">
+                            <span class="btn-icon">📝</span>
+                            <span class="btn-text">记录笔记</span>
+                        </button>
+                        <button class="quick-btn" data-module="habits">
+                            <span class="btn-icon">✅</span>
+                            <span class="btn-text">习惯打卡</span>
+                        </button>
+                    </div>
+
+                    <!-- 目标概览 -->
+                    <div class="overview-card" id="goalsOverview">
+                        <div class="card-header">
+                            <h2>🎯 目标概览</h2>
+                            <a href="#goals" class="view-all">查看全部</a>
+                        </div>
+                        <div class="card-content">
+                            <p class="empty-state">还没有目标，开始创建你的第一个目标吧！</p>
+                        </div>
+                    </div>
+
+                    <!-- 笔记概览 -->
+                    <div class="overview-card" id="notesOverview">
+                        <div class="card-header">
+                            <h2>📝 最近笔记</h2>
+                            <a href="#notes" class="view-all">查看全部</a>
+                        </div>
+                        <div class="card-content">
+                            <p class="empty-state">还没有笔记，记录你的学习心得吧！</p>
+                        </div>
+                    </div>
+
+                    <!-- 习惯概览 -->
+                    <div class="overview-card" id="habitsOverview">
+                        <div class="card-header">
+                            <h2>✅ 今日习惯</h2>
+                            <a href="#habits" class="view-all">查看全部</a>
+                        </div>
+                        <div class="card-content">
+                            <p class="empty-state">还没有习惯，创建一个新习惯吧！</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 目标管理区域 -->
+        <section id="goals" class="page-section">
+            <div class="module-header">
+                <h1>🎯 目标管理</h1>
+                <button class="btn btn-primary" id="addGoalBtn">
+                    <span>+</span> 添加目标
+                </button>
+            </div>
+
+            <!-- 筛选器 -->
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="pending">待开始</button>
+                <button class="filter-btn" data-filter="in-progress">进行中</button>
+                <button class="filter-btn" data-filter="completed">已完成</button>
+            </div>
+
+            <!-- 目标列表 -->
+            <div class="goals-list" id="goalsList">
+                <p class="empty-state">还没有目标，点击上方按钮添加你的第一个目标吧！</p>
+            </div>
+        </section>
+
+        <!-- 笔记管理区域 -->
+        <section id="notes" class="page-section">
+            <div class="module-header">
+                <h1>📝 学习笔记</h1>
+                <button class="btn btn-primary" id="addNoteBtn">
+                    <span>+</span> 添加笔记
+                </button>
+            </div>
+
+            <!-- 搜索栏 -->
+            <div class="search-bar">
+                <input type="text" class="search-input" id="noteSearch" placeholder="搜索笔记标题或内容...">
+                <div class="tags-filter" id="tagsFilter"></div>
+            </div>
+
+            <!-- 笔记列表 -->
+            <div class="notes-list" id="notesList">
+                <p class="empty-state">还没有笔记，点击上方按钮添加你的第一篇笔记吧！</p>
+            </div>
+        </section>
+
+        <!-- 习惯追踪区域 -->
+        <section id="habits" class="page-section">
+            <div class="module-header">
+                <h1>✅ 习惯追踪</h1>
+                <button class="btn btn-primary" id="addHabitBtn">
+                    <span>+</span> 添加习惯
+                </button>
+            </div>
+
+            <!-- 习惯列表 -->
+            <div class="habits-list" id="habitsList">
+                <p class="empty-state">还没有习惯，点击上方按钮添加你的第一个习惯吧！</p>
+            </div>
+
+            <!-- 统计卡片 -->
+            <div class="habits-stats">
+                <h3>本月统计</h3>
+                <div class="heatmap" id="habitHeatmap"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 模态框容器 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <!-- 目标模态框 -->
+        <div class="modal" id="goalModal">
+            <div class="modal-header">
+                <h2 id="goalModalTitle">添加目标</h2>
+                <button class="modal-close" data-close="goalModal">&times;</button>
+            </div>
+            <form class="modal-body" id="goalForm">
+                <input type="hidden" id="goalId">
+                <div class="form-group">
+                    <label for="goalTitle">目标标题</label>
+                    <input type="text" id="goalTitle" class="form-input" placeholder="输入目标标题" required>
+                </div>
+                <div class="form-group">
+                    <label for="goalCategory">分类</label>
+                    <select id="goalCategory" class="form-select">
+                        <option value="学习">学习</option>
+                        <option value="工作">工作</option>
+                        <option value="健康">健康</option>
+                        <option value="生活">生活</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="goalPriority">优先级</label>
+                    <select id="goalPriority" class="form-select">
+                        <option value="low">低</option>
+                        <option value="medium" selected>中</option>
+                        <option value="high">高</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="goalStatus">状态</label>
+                    <select id="goalStatus" class="form-select">
+                        <option value="pending">待开始</option>
+                        <option value="in-progress">进行中</option>
+                        <option value="completed">已完成</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="goalDescription">描述</label>
+                    <textarea id="goalDescription" class="form-textarea" rows="3" placeholder="添加详细描述（可选）"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-close="goalModal">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 笔记模态框 -->
+        <div class="modal" id="noteModal">
+            <div class="modal-header">
+                <h2 id="noteModalTitle">添加笔记</h2>
+                <button class="modal-close" data-close="noteModal">&times;</button>
+            </div>
+            <form class="modal-body" id="noteForm">
+                <input type="hidden" id="noteId">
+                <div class="form-group">
+                    <label for="noteTitle">标题</label>
+                    <input type="text" id="noteTitle" class="form-input" placeholder="输入笔记标题" required>
+                </div>
+                <div class="form-group">
+                    <label for="noteTags">标签</label>
+                    <input type="text" id="noteTags" class="form-input" placeholder="用逗号分隔多个标签">
+                </div>
+                <div class="form-group">
+                    <label for="noteContent">内容</label>
+                    <textarea id="noteContent" class="form-textarea" rows="8" placeholder="写下你的学习笔记..." required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-close="noteModal">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 习惯模态框 -->
+        <div class="modal" id="habitModal">
+            <div class="modal-header">
+                <h2 id="habitModalTitle">添加习惯</h2>
+                <button class="modal-close" data-close="habitModal">&times;</button>
+            </div>
+            <form class="modal-body" id="habitForm">
+                <input type="hidden" id="habitId">
+                <div class="form-group">
+                    <label for="habitTitle">习惯名称</label>
+                    <input type="text" id="habitTitle" class="form-input" placeholder="例如：每天阅读30分钟" required>
+                </div>
+                <div class="form-group">
+                    <label for="habitIcon">图标</label>
+                    <input type="text" id="habitIcon" class="form-input" placeholder="输入emoji图标，如：📚" maxlength="2">
+                </div>
+                <div class="form-group">
+                    <label for="habitColor">颜色</label>
+                    <select id="habitColor" class="form-select">
+                        <option value="#FF8C42">橙色</option>
+                        <option value="#4CAF50">绿色</option>
+                        <option value="#2196F3">蓝色</option>
+                        <option value="#9C27B0">紫色</option>
+                        <option value="#F44336">红色</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-close="habitModal">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast 容器 -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/utils/constants.js"></script>
+    <script src="js/utils/helpers.js"></script>
+    <script src="js/components/Navbar.js"></script>
+    <script src="js/components/Modal.js"></script>
+    <script src="js/components/Toast.js"></script>
+    <script src="js/modules/Goals.js"></script>
+    <script src="js/modules/Notes.js"></script>
+    <script src="js/modules/Habits.js"></script>
+    <script src="js/modules/Home.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
