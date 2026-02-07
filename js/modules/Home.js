@@ -20,10 +20,14 @@ class Home {
 
         // 统一处理快速操作按钮的点击事件
         this.initQuickActions();
+
+        // 处理"查看全部"链接
+        this.initViewAllLinks();
     }
 
     initQuickActions() {
         // 使用事件委托处理所有快速操作按钮
+        // 使用 capture 阶段确保优先执行
         document.addEventListener('click', (e) => {
             const quickBtn = e.target.closest('.quick-btn');
             if (!quickBtn) return;
@@ -31,24 +35,56 @@ class Home {
             const module = quickBtn.getAttribute('data-module');
             if (!module) return;
 
+            // 阻止所有其他监听器
+            e.stopImmediatePropagation();
+            e.preventDefault();
+
+            console.log('快速操作按钮点击:', module);
+
+            // 切换到对应模块
+            if (navbar) {
+                navbar.showSection(module);
+                navbar.setActiveLink(`#${module}`);
+            }
+
+            // 打开对应的添加模态框
+            setTimeout(() => {
+                switch (module) {
+                    case 'goals':
+                        if (goals) goals.openAddModal();
+                        break;
+                    case 'notes':
+                        if (notes) notes.openAddModal();
+                        break;
+                    case 'habits':
+                        if (habits) habits.openAddModal();
+                        break;
+                }
+            }, 50);
+        }, true); // 使用捕获阶段
+    }
+
+    initViewAllLinks() {
+        // 使用事件委托处理"查看全部"链接
+        document.addEventListener('click', (e) => {
+            const viewAllLink = e.target.closest('.view-all');
+            if (!viewAllLink) return;
+
+            // 获取目标模块
+            const href = viewAllLink.getAttribute('href');
+            if (!href || !href.startsWith('#')) return;
+
+            const sectionId = href.substring(1);
+
             e.preventDefault();
             e.stopPropagation();
 
-            // 切换到对应模块
-            navbar?.showSection(module);
-            navbar?.setActiveLink(`#${module}`);
+            console.log('查看全部链接点击:', sectionId);
 
-            // 打开对应的添加模态框
-            switch (module) {
-                case 'goals':
-                    goals?.openAddModal();
-                    break;
-                case 'notes':
-                    notes?.openAddModal();
-                    break;
-                case 'habits':
-                    habits?.openAddModal();
-                    break;
+            // 切换到对应页面
+            if (navbar) {
+                navbar.showSection(sectionId);
+                navbar.setActiveLink(href);
             }
         });
     }

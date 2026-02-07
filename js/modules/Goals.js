@@ -32,20 +32,20 @@ class Goals {
         // 表单提交
         this.elements.form?.addEventListener('submit', (e) => this.handleSubmit(e));
 
-        // 使用事件委托处理概览条目点击
+        // 使用事件委托处理概览条目点击（使用捕获阶段优先处理）
         document.addEventListener('click', (e) => {
             const overviewItem = e.target.closest('#goalsOverview .overview-item');
             if (overviewItem) {
                 const goalId = overviewItem.getAttribute('data-id');
                 if (goalId) {
+                    e.stopImmediatePropagation();
                     e.preventDefault();
-                    e.stopPropagation();
                     navbar?.showSection('goals');
                     navbar?.setActiveLink('#goals');
                     setTimeout(() => this.openEditModal(goalId), 100);
                 }
             }
-        });
+        }, true);
 
         // 监听页面切换
         window.addEventListener('sectionChange', (e) => {

@@ -52,3 +52,9 @@ p {
     outline: 2px solid var(--primary-color);
     outline-offset: 2px;
 }
+
+/* 快速操作按钮不显示焦点轮廓 */
+.quick-btn:focus-visible {
+    outline: none !important;
+    box-shadow: 0 0 0 3px var(--primary-light) !important;
+}

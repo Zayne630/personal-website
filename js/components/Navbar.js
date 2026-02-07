@@ -74,6 +74,23 @@ class Navbar {
 
         // 滚动到顶部
         window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        console.log('导航栏链接点击:', sectionId);
+    }
+
+    showSection(sectionId) {
+        document.querySelectorAll('.page-section').forEach(section => {
+            section.classList.remove('active');
+        });
+
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection) {
+            targetSection.classList.add('active');
+        }
+
+        // 触发页面更新事件
+        window.dispatchEvent(new CustomEvent('sectionChange', { detail: { sectionId } }));
+        console.log('页面切换:', sectionId);
     }
 
     showSection(sectionId) {
