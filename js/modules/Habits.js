@@ -79,11 +79,14 @@ class Habits {
     }
 
     openAddModal() {
+        console.log('Habits.openAddModal() 被调用');
         this.editingId = null;
         this.elements.modalTitle.textContent = '添加习惯';
         this.elements.form.reset();
         this.elements.form.querySelector('#habitColor').value = '#FF8C42';
+        console.log('准备打开 habitModal');
         modal?.open('habitModal');
+        console.log('habitModal 已打开');
     }
 
     openEditModal(id) {

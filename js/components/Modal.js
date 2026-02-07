@@ -33,11 +33,18 @@ class Modal {
     }
 
     open(modalId) {
-        const modal = document.getElementById(modalId);
-        if (!modal) return;
+        console.log('Modal.open() 被调用，modalId:', modalId);
 
+        const modal = document.getElementById(modalId);
+        if (!modal) {
+            console.log('Modal.open(): 找不到模态框', modalId);
+            return;
+        }
+
+        console.log('Modal.open(): 准备打开模态框', modalId);
         this.overlay.classList.add('active');
         modal.classList.add('active');
+        console.log('Modal.open(): 模态框已打开', modalId);
 
         // 聚焦到第一个输入框
         const firstInput = modal.querySelector('input, textarea, select');

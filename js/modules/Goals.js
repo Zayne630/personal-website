@@ -72,12 +72,15 @@ class Goals {
     }
 
     openAddModal() {
+        console.log('Goals.openAddModal() 被调用');
         this.editingId = null;
         this.elements.modalTitle.textContent = '添加目标';
         this.elements.form.reset();
         this.elements.form.querySelector('#goalStatus').value = 'pending';
         this.elements.form.querySelector('#goalPriority').value = 'medium';
+        console.log('准备打开 goalModal');
         modal?.open('goalModal');
+        console.log('goalModal 已打开');
     }
 
     openEditModal(id) {

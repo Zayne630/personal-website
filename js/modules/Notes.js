@@ -110,10 +110,13 @@ class Notes {
     }
 
     openAddModal() {
+        console.log('Notes.openAddModal() 被调用');
         this.editingId = null;
         this.elements.modalTitle.textContent = '添加笔记';
         this.elements.form.reset();
+        console.log('准备打开 noteModal');
         modal?.open('noteModal');
+        console.log('noteModal 已打开');
     }
 
     openEditModal(id) {
