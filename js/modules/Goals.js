@@ -32,15 +32,18 @@ class Goals {
         // 表单提交
         this.elements.form?.addEventListener('submit', (e) => this.handleSubmit(e));
 
-        // 使用事件委托处理快速操作按钮
+        // 使用事件委托处理概览条目点击
         document.addEventListener('click', (e) => {
-            const quickBtn = e.target.closest('.quick-btn[data-module="goals"]');
-            if (quickBtn) {
-                e.preventDefault();
-                e.stopPropagation();
-                navbar?.showSection('goals');
-                navbar?.setActiveLink('#goals');
-                this.openAddModal();
+            const overviewItem = e.target.closest('#goalsOverview .overview-item');
+            if (overviewItem) {
+                const goalId = overviewItem.getAttribute('data-id');
+                if (goalId) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    navbar?.showSection('goals');
+                    navbar?.setActiveLink('#goals');
+                    setTimeout(() => this.openEditModal(goalId), 100);
+                }
             }
         });
 
@@ -249,19 +252,6 @@ class Goals {
                 </div>
             </div>
         `).join('');
-
-        // 为概览条目添加点击事件
-        overview.querySelectorAll('.overview-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const goalId = item.getAttribute('data-id');
-                navbar?.showSection('goals');
-                navbar?.setActiveLink('#goals');
-                // 等待页面切换完成后打开编辑模态框
-                setTimeout(() => {
-                    this.openEditModal(goalId);
-                }, 100);
-            });
-        });
 
         // 更新统计
         const statGoals = document.getElementById('statGoals');

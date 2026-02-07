@@ -92,6 +92,7 @@
     cursor: pointer;
     border: none;
     outline: none;
+    position: relative;
 }
 
 .quick-btn:hover {
@@ -99,13 +100,23 @@
     box-shadow: var(--shadow-md);
 }
 
+.quick-btn:focus {
+    outline: none;
+}
+
 .quick-btn:focus-visible {
-    outline: 2px solid var(--primary-color);
-    outline-offset: 2px;
+    outline: none;
+    box-shadow: 0 0 0 3px var(--primary-light);
 }
 
 .quick-btn:active {
     transform: translateY(-2px);
+}
+
+/* 移除所有可能的伪元素 */
+.quick-btn::before,
+.quick-btn::after {
+    display: none;
 }
 
 .quick-btn .btn-icon {

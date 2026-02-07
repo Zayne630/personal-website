@@ -35,15 +35,18 @@ class Notes {
         // 表单提交
         this.elements.form?.addEventListener('submit', (e) => this.handleSubmit(e));
 
-        // 使用事件委托处理快速操作按钮
+        // 使用事件委托处理概览条目点击
         document.addEventListener('click', (e) => {
-            const quickBtn = e.target.closest('.quick-btn[data-module="notes"]');
-            if (quickBtn) {
-                e.preventDefault();
-                e.stopPropagation();
-                navbar?.showSection('notes');
-                navbar?.setActiveLink('#notes');
-                this.openAddModal();
+            const overviewItem = e.target.closest('#notesOverview .overview-item');
+            if (overviewItem) {
+                const noteId = overviewItem.getAttribute('data-id');
+                if (noteId) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    navbar?.showSection('notes');
+                    navbar?.setActiveLink('#notes');
+                    setTimeout(() => this.openEditModal(noteId), 100);
+                }
             }
         });
 
@@ -270,19 +273,6 @@ class Notes {
                 <span class="note-date">${Helpers.getRelativeTime(note.createdAt)}</span>
             </div>
         `).join('');
-
-        // 为概览条目添加点击事件
-        overview.querySelectorAll('.overview-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const noteId = item.getAttribute('data-id');
-                navbar?.showSection('notes');
-                navbar?.setActiveLink('#notes');
-                // 等待页面切换完成后打开编辑模态框
-                setTimeout(() => {
-                    this.openEditModal(noteId);
-                }, 100);
-            });
-        });
 
         // 更新统计
         const statNotes = document.getElementById('statNotes');

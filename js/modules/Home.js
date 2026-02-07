@@ -17,6 +17,40 @@ class Home {
 
         // 初始化头像上传功能
         this.initAvatarUpload();
+
+        // 统一处理快速操作按钮的点击事件
+        this.initQuickActions();
+    }
+
+    initQuickActions() {
+        // 使用事件委托处理所有快速操作按钮
+        document.addEventListener('click', (e) => {
+            const quickBtn = e.target.closest('.quick-btn');
+            if (!quickBtn) return;
+
+            const module = quickBtn.getAttribute('data-module');
+            if (!module) return;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            // 切换到对应模块
+            navbar?.showSection(module);
+            navbar?.setActiveLink(`#${module}`);
+
+            // 打开对应的添加模态框
+            switch (module) {
+                case 'goals':
+                    goals?.openAddModal();
+                    break;
+                case 'notes':
+                    notes?.openAddModal();
+                    break;
+                case 'habits':
+                    habits?.openAddModal();
+                    break;
+            }
+        });
     }
 
     initAvatarUpload() {
