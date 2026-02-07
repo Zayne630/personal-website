@@ -20,14 +20,30 @@ class Goals {
 
     init() {
         // 防止重复初始化
-        if (this.isInited) return;
+        if (this.isInited) {
+            console.log('Goals.init(): 已初始化，跳过');
+            return;
+        }
         this.isInited = true;
+
+        console.log('Goals.init() 开始');
+        console.log('Goals.addBtn:', this.elements.addBtn, 'ID:', this.elements.addBtn?.id);
 
         // 加载数据
         this.loadGoals();
 
-        // 添加按钮
-        this.elements.addBtn?.addEventListener('click', () => this.openAddModal());
+        // 添加按钮 - 使用命名函数以便调试
+        if (this.elements.addBtn) {
+            const goalsAddHandler = () => {
+                console.log('Goals.addBtn 被点击!');
+                console.log('当前元素:', event.target, 'ID:', event.target.id);
+                this.openAddModal();
+            };
+            this.elements.addBtn.addEventListener('click', goalsAddHandler);
+            console.log('Goals.addBtn 事件监听器已绑定');
+        } else {
+            console.error('Goals.addBtn 未找到!');
+        }
 
         // 筛选按钮
         this.elements.filters.forEach(btn => {

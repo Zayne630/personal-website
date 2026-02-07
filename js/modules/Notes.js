@@ -22,14 +22,34 @@ class Notes {
 
     init() {
         // 防止重复初始化
-        if (this.isInited) return;
+        if (this.isInited) {
+            console.log('Notes.init(): 已初始化，跳过');
+            return;
+        }
         this.isInited = true;
+
+        console.log('Notes.init() 开始');
+        console.log('Notes.addBtn:', this.elements.addBtn, 'ID:', this.elements.addBtn?.id);
+
+        // 检查是否有重复的 ID
+        const allAddBtns = document.querySelectorAll('[id^="add"]');
+        console.log('页面上所有添加按钮:', allAddBtns.length, Array.from(allAddBtns).map(b => b.id));
 
         // 加载数据
         this.loadNotes();
 
-        // 添加按钮
-        this.elements.addBtn?.addEventListener('click', () => this.openAddModal());
+        // 添加按钮 - 使用命名函数以便调试
+        if (this.elements.addBtn) {
+            const notesAddHandler = () => {
+                console.log('Notes.addBtn 被点击!');
+                console.log('当前元素:', event.target, 'ID:', event.target.id);
+                this.openAddModal();
+            };
+            this.elements.addBtn.addEventListener('click', notesAddHandler);
+            console.log('Notes.addBtn 事件监听器已绑定');
+        } else {
+            console.error('Notes.addBtn 未找到!');
+        }
 
         // 搜索输入
         this.elements.searchInput?.addEventListener('input', Helpers.debounce((e) => {

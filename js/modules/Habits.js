@@ -19,14 +19,30 @@ class Habits {
 
     init() {
         // 防止重复初始化
-        if (this.isInited) return;
+        if (this.isInited) {
+            console.log('Habits.init(): 已初始化，跳过');
+            return;
+        }
         this.isInited = true;
+
+        console.log('Habits.init() 开始');
+        console.log('Habits.addBtn:', this.elements.addBtn, 'ID:', this.elements.addBtn?.id);
 
         // 加载数据
         this.loadHabits();
 
-        // 添加按钮
-        this.elements.addBtn?.addEventListener('click', () => this.openAddModal());
+        // 添加按钮 - 使用命名函数以便调试
+        if (this.elements.addBtn) {
+            const habitsAddHandler = () => {
+                console.log('Habits.addBtn 被点击!');
+                console.log('当前元素:', event.target, 'ID:', event.target.id);
+                this.openAddModal();
+            };
+            this.elements.addBtn.addEventListener('click', habitsAddHandler);
+            console.log('Habits.addBtn 事件监听器已绑定');
+        } else {
+            console.error('Habits.addBtn 未找到!');
+        }
 
         // 表单提交
         this.elements.form?.addEventListener('submit', (e) => this.handleSubmit(e));
